@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import font
 from tkinter import messagebox
+from tkinter import re
 
 root = Tk()
 
@@ -55,7 +56,7 @@ def new_file():
 # Open File Function
 def open_file():
 	my_text.delete("1.0",END)
-	text_file = filedialog.askopenfilename(title="Open File",filetypes=(("TextFiles","*.txt"),("Python Files","*.py"),("All Files","*.*")))
+	text_file = filedialog.askopenfilename(title="Open File",filetypes=(("TextFiles","*.txt"),("Python Files","*.py"),("PDF","*.pdf")))
 	text_file = open(text_file,'r')
 	stuff = text_file.read()
 	my_text.insert(END,stuff)
@@ -63,7 +64,7 @@ def open_file():
 
 # Save File Function	
 def save_file():
-	text_file = filedialog.asksaveasfilename(defaultextension=".*",title="Save File",filetypes=(("TextFiles",".txt"),("Python Files",".py"),("All Files","*.*")))
+	text_file = filedialog.asksaveasfilename(defaultextension=".*",title="Save File",filetypes=(("TextFiles",".txt"),("Python Files",".py"),("PDF",".pdf")))
 	text_file = open(text_file,'w')
 	text_file.write(my_text.get("1.0",END))
 	text_file.close()
@@ -126,19 +127,16 @@ def find_and_replace():
     # Get the find and replace words from the user
     find_word = find_entry.get()
     replace_word = replace_entry.get()
-    start = my_text.get("1.0", "end").find(find_word)
-    end = start + len(find_word)
-    my_text.delete(f"1.0 + {start} chars", f"1.0 + {end} chars")
-    my_text.insert(f"1.0 + {start} chars", replace_word)
 
     # Get the text from the widget
     text = my_text.get("1.0", "end")
-    
-    # Check if the find word is present in the text
-    if find_word in text:
-        # Replace all occurrences of the find word with the replace word
-        text = text.replace(find_word, replace_word)
-        
+    original_text = text
+
+    # Replace all occurrences of the find word with the replace word
+    text = text.replace(find_word, replace_word)
+
+    # Check if the replacement was successful
+    if text != original_text:
         # Set the text back to the widget
         my_text.delete("1.0", "end")
         my_text.insert("1.0", text)
@@ -146,9 +144,11 @@ def find_and_replace():
         # Clear the find and replace entries
         find_entry.delete(0, END)
         replace_entry.delete(0, END)
+	
     else:
         # Show an error message if the find word is not present
         messagebox.showerror("Error", "The find word is not present in the text")
+
 	
 # Add Find and Replace button
 find_button = Button(bottom_frame, text="Find and Replace", command=find_and_replace)
@@ -162,4 +162,3 @@ replace_entry = Entry(bottom_frame)
 replace_entry.grid(row=2, column=2, padx=10, pady=10)
 
 root.mainloop()
-
