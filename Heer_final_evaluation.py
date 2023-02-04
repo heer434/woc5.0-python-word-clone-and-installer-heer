@@ -39,16 +39,15 @@ my_frame.grid_propagate(False)
 my_frame.columnconfigure(0, weight=10)
 
 # Add Text Box
-my_text = Text(my_frame, font=our_font)
-my_text.grid(row=0, column=0)
+my_text = Text(my_frame, font=our_font, wrap=WORD)
+my_text.grid(row=0, column=0, sticky='nswe')
 my_text.grid_rowconfigure(0, weight=1)
 my_text.grid_columnconfigure(0, weight=1)
 
 # Add Scrollbar
-scrollbar = Scrollbar(my_frame)
+scrollbar = Scrollbar(my_frame, orient=VERTICAL, command=my_text.yview)
 scrollbar.grid(row=0, column=1, sticky='ns')
 my_text.config(yscrollcommand=scrollbar.set)
-scrollbar.config(command=my_text.yview)
 
 # Create Menu
 my_menu=Menu(root)
