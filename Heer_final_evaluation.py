@@ -44,6 +44,12 @@ my_text.grid(row=0, column=0)
 my_text.grid_rowconfigure(0, weight=1)
 my_text.grid_columnconfigure(0, weight=1)
 
+# Add Scrollbar
+scrollbar = Scrollbar(my_frame)
+scrollbar.grid(row=0, column=1, sticky='ns')
+my_text.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=my_text.yview)
+
 # Create Menu
 my_menu=Menu(root)
 root.config(menu=my_menu)
