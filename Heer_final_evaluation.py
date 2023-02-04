@@ -121,5 +121,44 @@ my_listbox.bind('<ButtonRelease-1>', font_chooser)
 font_size_listbox.bind('<ButtonRelease-1>', font_size_chooser)
 font_style_listbox.bind('<ButtonRelease-1>', font_style_chooser)
 
+def find_and_replace():
+    # Get the find and replace words from the user
+    find_word = find_entry.get()
+    replace_word = replace_entry.get()
+    start = my_text.get("1.0", "end").find(find_word)
+    end = start + len(find_word)
+    my_text.delete(f"1.0 + {start} chars", f"1.0 + {end} chars")
+    my_text.insert(f"1.0 + {start} chars", replace_word)
+
+    # Get the text from the widget
+    text = my_text.get("1.0", "end")
+    
+    # Check if the find word is present in the text
+    if find_word in text:
+        # Replace all occurrences of the find word with the replace word
+        text = text.replace(find_word, replace_word)
+        
+        # Set the text back to the widget
+        my_text.delete("1.0", "end")
+        my_text.insert("1.0", text)
+        
+        # Clear the find and replace entries
+        find_entry.delete(0, END)
+        replace_entry.delete(0, END)
+    else:
+        # Show an error message if the find word is not present
+        messagebox.showerror("Error", "The find word is not present in the text")
+	
+# Add Find and Replace button
+find_button = Button(bottom_frame, text="Find and Replace", command=find_and_replace)
+find_button.grid(row=2, column=0, padx=10, pady=10)
+
+# Add Find and Replace entry boxes
+find_entry = Entry(bottom_frame)
+find_entry.grid(row=2, column=1, padx=10, pady=10)
+
+replace_entry = Entry(bottom_frame)
+replace_entry.grid(row=2, column=2, padx=10, pady=10)
+
 root.mainloop()
 
