@@ -8,5 +8,5 @@ Change Font Style,
 Create New File,
 Open Existing File,
 Save File,
-Exit Frome Existing File,
+Exit From Existing File,
 Find and Replace 
